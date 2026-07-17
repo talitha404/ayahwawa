@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
             ['email' => 'adminA@example.com'],
             [
                 'name' => 'Admin A',
-                'password' => 'password',
+                'password' => bcrypt('password'),
                 'role_id' => $adminRole->id,
                 'company_id' => $companyA->id, //how to make nullable
             ]
@@ -32,7 +32,7 @@ class UserSeeder extends Seeder
             ['email' => 'staffA@example.com'],
             [
                 'name' => 'Staff A',
-                'password' => 'password',
+                'password' => bcrypt('password'),
                 'role_id' => $staffRole->id,
                 'company_id' => $companyA->id,
             ]
@@ -42,7 +42,7 @@ class UserSeeder extends Seeder
             ['email' => 'adminB@example.com'],
             [
                 'name' => 'Admin B',
-                'password' => 'password',
+                'password' => bcrypt('password'),
                 'role_id' => $adminRole->id,
                 'company_id' => $companyB->id,
             ]
