@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('templates', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('company_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('company_id')->constrained()->cascadeOnDelete()->nullable(); //company boleh null
             $table->string('name');
             $table->json('fields'); // struktur form
             $table->longText('content'); // isi template ({{nama}}, dll)

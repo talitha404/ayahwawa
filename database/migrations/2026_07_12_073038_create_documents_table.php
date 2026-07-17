@@ -17,6 +17,10 @@ return new class extends Migration
             $table->foreignId('template_id')->constrained()->cascadeOnDelete();
             $table->foreignId('company_id')->constrained()->cascadeOnDelete();
             $table->json('data'); // hasil input user
+            $table->string('title');
+            $table->string('status')->default('draft');
+            $table->softDeletes();
+            $table->timestamp('expires_at')->nullable();
             $table->timestamps();
         });
     }
