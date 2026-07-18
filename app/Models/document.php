@@ -2,47 +2,52 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 class Document extends Model
 {
-    use SoftDeletes;
-
-    protected $table = 'documents';
+    use HasFactory;
 
     protected $fillable = [
-        'user_id',
-        'template_id',
         'company_id',
-        'data',
+        'template_id',
         'title',
-        'status',
-        'expires_at',
+        'content',
     ];
 
-    protected $casts = [
-        'user_id' => 'integer',
-        'template_id' => 'integer',
-        'company_id' => 'integer',
-        'data' => 'array',
-        'expires_at' => 'datetime',
-        'deleted_at' => 'datetime',
-    ];
-
-    public function user(): BelongsTo
+    /**
+     * The "booted" method of the model.
+     * Menerapkan Global Scope untuk memfilter data dokumen secara otomatis.
+     */
+    protected static function booted(): void
     {
-        return $this->belongsTo(User::class);
+        static::addGlobalScope('company', function (Builder $builder) {
+            // Cek jika user yang login adalah 'staff'
+            if (Auth::check() && Auth::user()->role->name === 'staff') {
+                // Maka, hanya tampilkan dokumen yang company_id-nya sama dengan company_id user
+                $builder->where('company_id', Auth::user()->company_id);
+            }
+            // Jika user adalah 'admin', scope ini tidak akan diaplikasikan,
+            // sehingga admin bisa melihat semua dokumen dari semua company.
+        });
     }
 
-    public function template(): BelongsTo
-    {
-        return $this->belongsTo(Template::class);
-    }
-
-    public function company(): BelongsTo
+    /**
+     * Relasi ke Company
+     */
+    public function company()
     {
         return $this->belongsTo(Company::class);
+    }
+
+    /**
+     * Relasi ke Template
+     */
+    public function template()
+    {
+        return $this->belongsTo(Template::class);
     }
 }

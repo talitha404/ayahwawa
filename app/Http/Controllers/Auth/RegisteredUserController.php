@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Company;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -30,13 +32,20 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        // BELUM TES
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'company' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        $role = Role::firstOrCreate(['name' => 'staff']);
+        $company = Company::firstOrCreate(['name' => $request->company]);
+
         $user = User::create([
+            'role_id' => $role->id,
+            'company_id' => $company->id,
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
