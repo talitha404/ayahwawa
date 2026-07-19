@@ -1,6 +1,6 @@
-# Ayah Wawa SaaS
+# Waprofit
 
-Ayah Wawa SaaS adalah SaaS berbasis web yang membantu pengguna membuat dan mengedit dokumen secara cepat melalui perangkat mobile menggunakan template siap pakai.
+Waprofit adalah SaaS berbasis web yang membantu pengguna membuat dan mengedit dokumen secara cepat melalui perangkat mobile menggunakan template siap pakai.
 
 ## Teknologi yang Digunakan
 * Backend: Laravel 11
